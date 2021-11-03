@@ -16,6 +16,12 @@ public class Schedule {
     @ElementCollection(targetClass = EmployeeSkill.class, fetch = FetchType.LAZY)
     private Set<EmployeeSkill> activities;
 
+    @ElementCollection
+    private List<Long> petIds;
+
+    @ElementCollection
+    private List<Long> employeeIds;
+
     @ManyToMany
     private List<Pet> pets;
 
@@ -29,6 +35,38 @@ public class Schedule {
         this.id = id;
         this.date = date;
         this.activities = activities;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public List<Long> getPetIds() {
+        return petIds;
+    }
+
+    public void setPetIds(List<Long> petIds) {
+        this.petIds = petIds;
+    }
+
+    public List<Long> getEmployeeIds() {
+        return employeeIds;
+    }
+
+    public void setEmployeeIds(List<Long> employeeIds) {
+        this.employeeIds = employeeIds;
     }
 
     public long getId() {
