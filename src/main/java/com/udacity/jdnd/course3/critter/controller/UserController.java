@@ -16,6 +16,7 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Handles web requests related to Users.
@@ -72,13 +73,8 @@ public class UserController {
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        List<EmployeeDTO> dtoList = new ArrayList<>();
-        List<Employee> employees = employeeService.findAllEmployeeForService(employeeDTO.getSkills());
-
-        for(Employee employee : employees){
-            dtoList.add(employeeToDTO(employee));
-        }
-        return dtoList;
+        List<Employee> employees = employeeService.findAllEmployeeForService(employeeDTO.getDate(),employeeDTO.getSkills());
+        return employees.stream().map(e -> employeeToDTO(e)).collect(Collectors.toList());
     }
 
 

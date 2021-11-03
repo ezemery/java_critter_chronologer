@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Handles web requests related to Schedules.
@@ -28,43 +29,26 @@ public class ScheduleController {
 
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {
-        List<ScheduleDTO> dtoList = new ArrayList<>();
         List<Schedule> schedules = scheduleService.getAllSchedules();
-
-        for(Schedule schedule : schedules){
-            dtoList.add(scheduleToDTO(schedule));
-        }
-        return dtoList;
+        return schedules.stream().map(e -> scheduleToDTO(e)).collect(Collectors.toList());
     }
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        List<ScheduleDTO> dtoList = new ArrayList<>();
-        List<Schedule> petSchedules= scheduleService.getScheduleForPet(petId);
-        for(Schedule schedule : petSchedules){
-            dtoList.add(scheduleToDTO(schedule));
-        }
-        return dtoList;
+        List<Schedule> petSchedules = scheduleService.getScheduleForPet(petId);
+        return petSchedules.stream().map(e -> scheduleToDTO(e)).collect(Collectors.toList());
     }
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        List<ScheduleDTO> dtoList = new ArrayList<>();
         List<Schedule> employeeSchedules = scheduleService.getScheduleForEmployee(employeeId);
-        for(Schedule schedule : employeeSchedules){
-            dtoList.add(scheduleToDTO(schedule));
-        }
-        return dtoList;
+        return employeeSchedules.stream().map(e -> scheduleToDTO(e)).collect(Collectors.toList());
     }
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        List<ScheduleDTO> dtoList = new ArrayList<>();
         List<Schedule> customerSchedules = scheduleService.getScheduleForCustomer(customerId);
-        for(Schedule schedule : customerSchedules){
-            dtoList.add(scheduleToDTO(schedule));
-        }
-        return dtoList;
+        return customerSchedules.stream().map(e -> scheduleToDTO(e)).collect(Collectors.toList());
     }
 
     private ScheduleDTO scheduleToDTO(Schedule schedule){

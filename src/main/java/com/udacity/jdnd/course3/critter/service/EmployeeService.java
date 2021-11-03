@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,13 +40,14 @@ public class EmployeeService {
             employeeRepository.save(employee);
     }
 
-    public List<Employee> findAllEmployeeForService(Set<EmployeeSkill> skills){
-        List<Employee> employees = (List<Employee>) employeeRepository.findAll();
+    public List<Employee> findAllEmployeeForService(LocalDate date, Set<EmployeeSkill> skills){
+        List<Employee> employees = employeeRepository.findEmployeesByDaysAvailableAndSkillsIn(date.getDayOfWeek(),skills);
+        List<Employee> availableEmployees = new ArrayList<>();
         for(Employee employee : employees){
-            if(!employee.getSkills().contains(skills)){
-                employees.remove(employee);
+            if(employee.getSkills().containsAll(skills)){
+                availableEmployees.add(employee);
             }
         }
-        return employees;
+        return availableEmployees;
     }
 }
