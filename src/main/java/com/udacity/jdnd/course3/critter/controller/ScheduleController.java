@@ -1,7 +1,11 @@
 package com.udacity.jdnd.course3.critter.controller;
 
 import com.udacity.jdnd.course3.critter.dto.ScheduleDTO;
+import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
+import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,11 @@ import java.util.stream.Collectors;
 public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private PetService petService;
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
@@ -54,12 +63,52 @@ public class ScheduleController {
     private ScheduleDTO scheduleToDTO(Schedule schedule){
         ScheduleDTO dto = new ScheduleDTO();
         BeanUtils.copyProperties(schedule, dto);
+        List<Pet> petList = petService.getAllPets();
+        List<Employee> employeeList = employeeService.getAllEmployees();
+
+        List<Long> petIds = new ArrayList<>();
+        if(petList.size() != 0){
+            for(Pet p : petList){
+                petIds.add(p.getId());
+            }
+        }
+
+        List<Long> employeeIds = new ArrayList<>();
+        if(employeeList.size() != 0){
+            for(Employee e : employeeList){
+                employeeIds.add(e.getId());
+            }
+        }
+        dto.setEmployeeIds(employeeIds);
+        dto.setPetIds(petIds);
         return dto;
     }
 
     private Schedule dtoToSchedule(ScheduleDTO dto){
         Schedule schedule = new Schedule();
         BeanUtils.copyProperties(dto, schedule);
+        List<Long> petIds = dto.getPetIds();
+        List<Long> employeeIds = dto.getEmployeeIds();
+
+        List<Pet> petList = new ArrayList<>();
+        if(petIds.size() != 0){
+            for(Long id : petIds){
+                Pet pet = petService.getPetById(id);
+                petList.add(pet);
+            }
+        }
+
+        List<Employee> employeeList = new ArrayList<>();
+        if(petIds.size() != 0){
+            for(Long id : employeeIds){
+                Employee employee = employeeService.findEmployeeById(id);
+                employeeList.add(employee);
+            }
+        }
+
+        schedule.setEmployees(employeeList);
+        schedule.setPets(petList);
+
         return schedule;
     }
 }

@@ -25,6 +25,10 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
+    public List<Employee> getAllEmployees(){
+        return employeeRepository.findAll();
+    }
+
     public Employee findEmployeeById(long id){
         Optional<Employee> employee = employeeRepository.findById(id);
         if (employee.isPresent()) {

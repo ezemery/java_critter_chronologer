@@ -10,15 +10,10 @@ import java.util.List;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    @Query("from Schedule s join fetch s.pets p" +
-            " where p.owner.id = :id")
+    @Query("from Schedule s join s.pets p join p.owner o where o.id = :id")
     List<Schedule> findScheduleByCustomerId(@Param("id") long id);
 
-    @Query("from Schedule s join fetch s.pets p" +
-            " where p.id = :id")
-    List<Schedule> findScheduleByPet(@Param("id") long id);
+    List<Schedule> findAllByPetsId(@Param("id") long id);
 
-    @Query("from Schedule s join fetch s.employees e" +
-            " where e.id = :id")
-    List<Schedule> findScheduleByEmployee(@Param("id") long id);
+    List<Schedule> findAllByEmployeesId(@Param("id") long id);
 }
