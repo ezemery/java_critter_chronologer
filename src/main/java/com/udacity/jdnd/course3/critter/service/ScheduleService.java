@@ -18,16 +18,14 @@ public class ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    public Schedule save(Schedule schedule){
-        return scheduleRepository.save(schedule);
-    }
+    public Schedule save(Schedule schedule){return scheduleRepository.save(schedule);}
 
     public List<Schedule> getAllSchedules(){
         return scheduleRepository.findAll();
     }
 
     public List<Schedule> getScheduleForPet(long id){
-        return scheduleRepository.findAllByPetsId(id);
+        return scheduleRepository.findAllByPets_Id(id);
     }
 
     public List<Schedule> getScheduleForCustomer(long id){
@@ -35,7 +33,7 @@ public class ScheduleService {
     }
 
     public List<Schedule> getScheduleForEmployee(long id){
-        return scheduleRepository.findAllByEmployeesId(id);
+        return scheduleRepository.findAllByEmployees_Id(id);
     }
 
 }

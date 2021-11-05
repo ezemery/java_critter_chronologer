@@ -7,10 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-     @Query("from Customer c join fetch c.pets p" +
+     @Query("from Customer c join c.pets p" +
              " where p.owner.id = :id")
      Customer findCustomerByPet(@Param("id") long id);
 }

@@ -9,23 +9,19 @@ import java.util.Set;
 @Entity
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
     private LocalDate date;
 
     @ElementCollection(targetClass = EmployeeSkill.class, fetch = FetchType.LAZY)
     private Set<EmployeeSkill> activities;
 
-    @ElementCollection
-    private List<Long> petIds;
-
-    @ElementCollection
-    private List<Long> employeeIds;
-
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "SCHEDULE_PET", joinColumns = @JoinColumn(name = "SCHEDULE_ID"), inverseJoinColumns = @JoinColumn(name = "PET_ID"))
     private List<Pet> pets;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "SCHEDULE_EMPLOYEE", joinColumns = @JoinColumn(name = "SCHEDULE_ID"), inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID"))
     private List<Employee> employees;
 
     public Schedule() {
@@ -51,22 +47,6 @@ public class Schedule {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
-    }
-
-    public List<Long> getPetIds() {
-        return petIds;
-    }
-
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
-    }
-
-    public List<Long> getEmployeeIds() {
-        return employeeIds;
-    }
-
-    public void setEmployeeIds(List<Long> employeeIds) {
-        this.employeeIds = employeeIds;
     }
 
     public long getId() {

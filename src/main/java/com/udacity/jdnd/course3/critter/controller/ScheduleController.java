@@ -63,21 +63,16 @@ public class ScheduleController {
     private ScheduleDTO scheduleToDTO(Schedule schedule){
         ScheduleDTO dto = new ScheduleDTO();
         BeanUtils.copyProperties(schedule, dto);
-        List<Pet> petList = petService.getAllPets();
-        List<Employee> employeeList = employeeService.getAllEmployees();
 
         List<Long> petIds = new ArrayList<>();
-        if(petList.size() != 0){
-            for(Pet p : petList){
-                petIds.add(p.getId());
-            }
+        for(Pet p : schedule.getPets()){
+            petIds.add(p.getId());
         }
 
         List<Long> employeeIds = new ArrayList<>();
-        if(employeeList.size() != 0){
-            for(Employee e : employeeList){
-                employeeIds.add(e.getId());
-            }
+
+        for(Employee e : schedule.getEmployees()){
+            employeeIds.add(e.getId());
         }
         dto.setEmployeeIds(employeeIds);
         dto.setPetIds(petIds);
